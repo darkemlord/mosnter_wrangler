@@ -4,7 +4,7 @@ import pygame as pg
 class Player(pg.sprite.Sprite):
     """Player class to control player character"""
 
-    def __init__(self, WINDOW_WIDTH, WINDOW_HEIGHT):
+    def __init__(self, WINDOW_WIDTH: int, WINDOW_HEIGHT: int):
         """Initialize the player character"""
         super().__init__()
         self.window_width = WINDOW_WIDTH
