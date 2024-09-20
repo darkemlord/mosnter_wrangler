@@ -1,6 +1,8 @@
 import pygame as pg
 import random
 
+from classes.monster import Monster
+
 
 class Game:
     """Game class to control game play"""
@@ -13,6 +15,7 @@ class Game:
         window_height: int,
         fps: int,
         display_surface: pg.Surface,
+        running: bool = True,
     ):
         """Initialize the game"""
         # Set game values
@@ -26,6 +29,7 @@ class Game:
         self.window_width = window_width
         self.window_height = window_height
         self.display_surface = display_surface
+        self.running = running
 
         # Set game sounds
 
@@ -158,9 +162,54 @@ class Game:
         self.round_number += 1
         self.player.warps += 1
 
+        # Remove any remaining monsters from a game reset
+        for monster in self.monster_group:
+            self.monster_group.remove(monster)
+
+        # Add monsters to the monster group
+        for i in range(self.round_number):
+            self.monster_group.add(
+                Monster(
+                    random.randint(0, self.window_width - 64),
+                    random.randint(100, self.window_width - 164),
+                    self.target_monster_images[0],
+                    0,
+                )
+            )
+            self.monster_group.add(
+                Monster(
+                    random.randint(0, self.window_width - 64),
+                    random.randint(100, self.window_width - 164),
+                    self.target_monster_images[1],
+                    0,
+                )
+            )
+            self.monster_group.add(
+                Monster(
+                    random.randint(0, self.window_width - 64),
+                    random.randint(100, self.window_width - 164),
+                    self.target_monster_images[2],
+                    0,
+                )
+            )
+            self.monster_group.add(
+                Monster(
+                    random.randint(0, self.window_width - 64),
+                    random.randint(100, self.window_width - 164),
+                    self.target_monster_images[3],
+                    0,
+                )
+            )
+        # Choose a new target monster
+        self.choose_new_target()
+
+        self.next_level_sound.play()
+
     def choose_new_target(self):
         """Choose a new target for the player"""
-        pass
+        target_monster = random.choice(self.monster_group.sprites())
+        self.target_monster_type = target_monster.type
+        self.target_monster_image = target_monster.image
 
     def pause_game(self):
         """Pause the game"""
