@@ -125,7 +125,7 @@ class Game:
         pg.draw.rect(
             self.display_surface,
             colors[self.target_monster_type],
-            (0, 100, self.window_width, self.window_height - 200),
+            (0, 100, self.window_width, self.window_height - 100),
             4,
         )
 
@@ -137,8 +137,6 @@ class Game:
 
         # we collider with a monster
         if collided_monster:
-            print(f"Caught monster type: {collided_monster.type}")
-            print(f"Target monster type: {self.target_monster_type}")
             # Caught the correct monster
             if collided_monster.type == self.target_monster_type:
                 self.score += 100 * self.round_number
