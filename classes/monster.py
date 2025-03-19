@@ -7,8 +7,6 @@ class Monster(pg.sprite.Sprite):
 
     def __init__(
         self,
-        x: int,
-        y: int,
         image: pg.Surface,
         monster_type,
         window_width: int,

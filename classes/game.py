@@ -137,6 +137,8 @@ class Game:
 
         # we collider with a monster
         if collided_monster:
+            print(f"Caught monster type: {collided_monster.type}")
+            print(f"Target monster type: {self.target_monster_type}")
             # Caught the correct monster
             if collided_monster.type == self.target_monster_type:
                 self.score += 100 * self.round_number
@@ -150,6 +152,18 @@ class Game:
                     # The round is over
                     self.player.reset()
                     self.start_new_round()
+            else:
+                print("Wrong monster caught!")
+                # Caught the wrong monster
+                self.player.die_sound.play()
+                self.player.lives -= 1
+                # Check for game over
+                if self.player.lives <= 0:
+                    self.pause_game(
+                        "Final Score: " + str(self.score), "Press 'Enter' to play again"
+                    )
+                    self.reset_game()
+                self.player.reset()
 
     def start_new_round(self):
         """Start a new round of the game"""
@@ -170,8 +184,6 @@ class Game:
         for i in range(self.round_number):
             self.monster_group.add(
                 Monster(
-                    random.randint(0, self.window_width - 64),
-                    random.randint(100, self.window_width - 164),
                     self.target_monster_images[0],
                     0,
                     self.window_width,
@@ -180,30 +192,24 @@ class Game:
             )
             self.monster_group.add(
                 Monster(
-                    random.randint(0, self.window_width - 64),
-                    random.randint(100, self.window_width - 164),
                     self.target_monster_images[1],
-                    0,
+                    1,
                     self.window_width,
                     self.window_height,
                 )
             )
             self.monster_group.add(
                 Monster(
-                    random.randint(0, self.window_width - 64),
-                    random.randint(100, self.window_width - 164),
                     self.target_monster_images[2],
-                    0,
+                    2,
                     self.window_width,
                     self.window_height,
                 )
             )
             self.monster_group.add(
                 Monster(
-                    random.randint(0, self.window_width - 64),
-                    random.randint(100, self.window_width - 164),
                     self.target_monster_images[3],
-                    0,
+                    3,
                     self.window_width,
                     self.window_height,
                 )
