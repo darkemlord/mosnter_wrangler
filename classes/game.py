@@ -174,6 +174,8 @@ class Game:
                     random.randint(100, self.window_width - 164),
                     self.target_monster_images[0],
                     0,
+                    self.window_width,
+                    self.window_height,
                 )
             )
             self.monster_group.add(
@@ -182,6 +184,8 @@ class Game:
                     random.randint(100, self.window_width - 164),
                     self.target_monster_images[1],
                     0,
+                    self.window_width,
+                    self.window_height,
                 )
             )
             self.monster_group.add(
@@ -190,6 +194,8 @@ class Game:
                     random.randint(100, self.window_width - 164),
                     self.target_monster_images[2],
                     0,
+                    self.window_width,
+                    self.window_height,
                 )
             )
             self.monster_group.add(
@@ -198,6 +204,8 @@ class Game:
                     random.randint(100, self.window_width - 164),
                     self.target_monster_images[3],
                     0,
+                    self.window_width,
+                    self.window_height,
                 )
             )
         # Choose a new target monster
@@ -211,10 +219,46 @@ class Game:
         self.target_monster_type = target_monster.type
         self.target_monster_image = target_monster.image
 
-    def pause_game(self):
+    def pause_game(self, main_text_string: str, sub_text_string: str):
         """Pause the game"""
-        pass
+        # Set Color
+        WHITE = (255, 255, 255)
+        BLACK = (0, 0, 0)
+
+        # Create the main pause text
+        main_text = self.font.render(main_text_string, True, WHITE)
+        main_text_rect = main_text.get_rect()
+        main_text_rect.center = (self.window_width // 2, self.window_height // 2)
+
+        # Create the sub pause text
+        sub_text = self.font.render(sub_text_string, True, WHITE)
+        sub_text_rect = sub_text.get_rect()
+        sub_text_rect.center = (self.window_width // 2, self.window_height // 2 + 64)
+
+        # Display the pause text
+        self.display_surface.fill(BLACK)
+        self.display_surface.blit(main_text, main_text_rect)
+        self.display_surface.blit(sub_text, sub_text_rect)
+        pg.display.update()
+
+        # Pause the game
+        is_paused = True
+        while is_paused:
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_RETURN:
+                        is_paused = False
+                if event.type == pg.QUIT:
+                    is_paused = False
+                    self.running = False
 
     def reset_game(self):
         """Reset the game"""
-        pass
+        self.score = 0
+        self.round_number = 0
+
+        self.player.lives = 5
+        self.player.warps = 2
+        self.player.reset()
+
+        self.start_new_round()

@@ -16,11 +16,14 @@ class Monster(pg.sprite.Sprite):
     ):
         """Initialize the monster character"""
         super().__init__()
-        self.window_width = (window_width,)
+        self.window_width = window_width
         self.window_height = window_height
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
+        self.rect.topleft = (
+            random.randint(0, window_width - self.rect.width),  # X position
+            random.randint(100, window_height - self.rect.height),  # Y position
+        )
 
         # Monster type is an int 0 -> blue, 1 -> green, 2 -> purple, 3 -> yellow
         self.type = monster_type
@@ -36,7 +39,7 @@ class Monster(pg.sprite.Sprite):
         self.rect.y += self.dy * self.velocity
 
         # Bounce the monster off the edges of the screen
-        if self.rect.left < 0 or self.rect.right > self.window_width:
-            self.dx *= -1 * self.dx
-        if self.rect.top < 0 or self.rect.bottom > self.window_height:
-            self.dy *= -1 * self.dy
+        if self.rect.left <= 0 or self.rect.right >= self.window_width:
+            self.dx *= -1  # Invert the direction on the X-axis
+        if self.rect.top <= 100 or self.rect.bottom >= self.window_height:
+            self.dy *= -1  # Invert the direction on the Y-axis
